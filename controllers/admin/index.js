@@ -1,29 +1,30 @@
 const router = require('express').Router()
 
-const MemberController = require('./member')
+const SystemAdminController = require('./systemAdmin')
 const MarketingController = require('./marketing')
 
-const AdminModel = require('../../models/admin')
+const SystemAdminModel = require('../../models/systemUser')
 const {superAdmin} = require('../../config')
 
 class Admin {
-    constructor(app, middleware, path) {
-        app.use(path, ...middleware, router)
-        Object.assign(this, { app, path, })
-        this.init()
+    constructor(app, authMiddleware, path) {
+        app.use(path, router)
+        // router.use(...authMiddleware)
+        Object.assign(this, { app, path, authMiddleware, })
+        this.initRouter()
         this.createSuperAdmin()
     }
     /**
      * 注册路由
      */
-    init() {        
+    initRouter() {        
         // 登陆
         router.post('/sign-in', this.signIn)
         // 会员
-        router.get('/member', MemberController.list)
-              .post('/member', MemberController.create)
-              .put('/member', MemberController.update)
-              .delete('/member', MemberController.delete)
+        router.get('/system-admin',    ...this.authMiddleware, SystemAdminController.list)
+              .post('/system-admin',   ...this.authMiddleware, SystemAdminController.create)
+              .put('/system-admin',    ...this.authMiddleware, SystemAdminController.update)
+              .delete('/system-admin', ...this.authMiddleware, SystemAdminController.delete)
         // 营销
         router.get('/marketing', MarketingController.list)
     }
@@ -31,9 +32,9 @@ class Admin {
      * 创建超级管理员
      */
     createSuperAdmin() {
-        AdminModel.findByUsername(superAdmin.username)
+        SystemAdminModel.findByUsername(superAdmin.username)
             .then(u => {
-                if (!u) AdminModel.create(superAdmin)
+                if (!u) SystemAdminModel.create(superAdmin)
             })
     }
     /**
@@ -69,14 +70,14 @@ class Admin {
             password: req.body.password,
         }
         if (!user.password || !user.username) return res.tools.setJson(1, '请输入用户名密码.')
-        AdminModel.findByUsername(user.username)
+        SystemAdminModel.findByUsername(user.username)
             .then(u => {
                 if (!u) return res.tools.setJson(1, '用户不存在.')
                 if (u.password !== res.jwt.setMD5(user.password)) return res.tools.setJson(1, '用户名密码有误.')
                 delete u.password
                 delete u.token
                 let token = res.jwt.setToken(u)
-                AdminModel.updateById(u._id, { token })
+                SystemAdminModel.updateById(u._id, { token })
                     .then(result => {
                         res.tools.setJson(0, null, { token: 'Bearer ' + token })
                     })                

@@ -27,7 +27,7 @@ mongolass.plugin('addCreateAt', {
 /**
  * 系统用户
  */
-exports.Admin = mongolass.model('Admin', {
+exports.SystemAdmin = mongolass.model('systemAdmin', {
     username: { type: 'string', required: true },
     password: { type: 'string', required: true },
     avatar: { type: 'string', default: '/img/default_avatar.jpg' },

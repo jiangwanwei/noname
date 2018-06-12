@@ -23,8 +23,8 @@ class Admin {
         // 会员
         router.get('/system-admin',    ...this.authMiddleware, SystemAdminController.list)
               .post('/system-admin',   ...this.authMiddleware, SystemAdminController.create)
-              .put('/system-admin',    ...this.authMiddleware, SystemAdminController.update)
-              .delete('/system-admin', ...this.authMiddleware, SystemAdminController.delete)
+              .put('/system-admin/:_id',    ...this.authMiddleware, SystemAdminController.update)
+              .delete('/system-admin/:_id', ...this.authMiddleware, SystemAdminController.delete)
         // 营销
         router.get('/marketing', MarketingController.list)
     }

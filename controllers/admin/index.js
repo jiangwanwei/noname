@@ -26,13 +26,16 @@ class Admin extends Base{
         // 登陆
         router.post('/sign-in', this.signIn)
         // 管理员
-        router.get('/system-admin',    ...this.authMiddleware, SystemAdminController.list)
-              .post('/system-admin',   ...this.authMiddleware, SystemAdminController.create)
-              .put('/system-admin/:_id',    ...this.authMiddleware, SystemAdminController.update)
-              .delete('/system-admin/:_id', ...this.authMiddleware, SystemAdminController.delete)
+        router.route('/system-admin').all(this.authMiddleware)
+              .get( SystemAdminController.list)
+              .post(SystemAdminController.create)
+        router.route('/system-admin/:_id').all(this.authMiddleware)
+              .put(SystemAdminController.update)
+              .delete(SystemAdminController.delete)
         // 网站配置
-        router.get('/system-set-cfg', ...this.authMiddleware, ConfigController.getCfg)
-              .put('/system-set-cfg', ...this.authMiddleware, ConfigController.setCfg)
+        router.route('/system-set-cfg').all(this.authMiddleware)
+              .get(ConfigController.getCfg)
+              .put(ConfigController.setCfg)
         // 营销
         router.get('/marketing', MarketingController.list)
     }

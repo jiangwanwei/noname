@@ -1,18 +1,23 @@
 const router = require('express').Router()
 
 const SystemAdminController = require('./systemAdmin')
+const ConfigController = require('./configs')
 const MarketingController = require('./marketing')
 
 const SystemAdminModel = require('../../models/systemUser')
+const ConfigModel = require('../../models/siteConfig')
 const {superAdmin} = require('../../config')
+const Base = require('../base')
 
-class Admin {
+class Admin extends Base{
     constructor(app, authMiddleware, path) {
+        super()
         app.use(path, router)
         // router.use(...authMiddleware)
         Object.assign(this, { app, path, authMiddleware, })
         this.initRouter()
         this.createSuperAdmin()
+        this.createConfig()
     }
     /**
      * 注册路由
@@ -20,22 +25,38 @@ class Admin {
     initRouter() {        
         // 登陆
         router.post('/sign-in', this.signIn)
-        // 会员
+        // 管理员
         router.get('/system-admin',    ...this.authMiddleware, SystemAdminController.list)
               .post('/system-admin',   ...this.authMiddleware, SystemAdminController.create)
               .put('/system-admin/:_id',    ...this.authMiddleware, SystemAdminController.update)
               .delete('/system-admin/:_id', ...this.authMiddleware, SystemAdminController.delete)
+        // 网站配置
+        router.get('/system-set-cfg', ...this.authMiddleware, ConfigController.getCfg)
+              .put('/system-set-cfg', ...this.authMiddleware, ConfigController.setCfg)
         // 营销
         router.get('/marketing', MarketingController.list)
     }
     /**
      * 创建超级管理员
      */
-    createSuperAdmin() {
-        SystemAdminModel.findByUsername(superAdmin.username)
-            .then(u => {
-                if (!u) SystemAdminModel.create(superAdmin)
-            })
+    async createSuperAdmin() {
+        let u = await SystemAdminModel.findByUsername(superAdmin.username)
+        if (!u) {
+            SystemAdminModel.create(superAdmin)
+            console.log('[MONGODB] 创建超级用户成功.')
+        }
+    }
+    /**
+     * 初始化配置（网站基本配置...）
+     */
+    createConfig() {
+        this.configs_field.forEach(async name => {
+            let result = await ConfigModel.findByName(name)
+            if (!result) {
+                ConfigModel.create({ name, content: '{}'})
+                console.log(`[MONGODB] 创建网站配置 ${name} 成功.`)
+            }
+        })
     }
     /**
      * 

@@ -25,12 +25,22 @@ mongolass.plugin('addCreateAt', {
 })
 
 /**
- * 系统用户
+ * 系统管理员
  */
 exports.SystemAdmin = mongolass.model('systemAdmin', {
     username: { type: 'string', required: true },
     password: { type: 'string', required: true },
     avatar: { type: 'string', default: '/img/default_avatar.jpg' },
     real_name: { type: 'string' },
-    token: { type: 'string' },    
+    token: { type: 'string' }, 
+    updated_at: { type: Mongolass.Types.Date, default: new Date() } 
+})
+exports.SystemAdmin.index({username: 1}, {unique: true}).exec() // 根据用户名找到用户，用户名全局唯一 保证用户名是不重复的
+
+/**
+ * 网站配置  （网站基本信息）
+ */
+exports.Config = mongolass.model('Configs', {
+    name: { type: 'string', required: true },
+    content: { type: 'string', required: true },
 })

@@ -1,14 +1,36 @@
 const systemAdminModel = require('../../models/systemUser')
 const Base = require('../base')
 /**
- * 会员模块
+ * 管理员模块
  */
 class Member extends Base {
     constructor() {
         super()
     }
     /**
-     * 会员列表
+     * 
+     * @api {method} /admin/system-admin
+     * @apiName 会员列表
+     * @apiGroup admin
+     * @apiVersion  0.1.0
+     * 
+     * 
+     * @apiParam  {String} page 页码
+     * @apiParam  {String} page_size 分页条数
+     * @apiSuccess (200) {type} name description
+     * 
+     * @apiParamExample  {type} Request-Example:
+     * {
+     *     property : value
+     * }
+     * 
+     * 
+     * @apiSuccessExample {type} Success-Response:
+     * {
+     *     property : value
+     * }
+     * 
+     * 
      */
     async list(req, res) {
         let {page, page_size} = req.query

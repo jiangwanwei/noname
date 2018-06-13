@@ -1,6 +1,6 @@
 class Base {
     constructor() {
-        
+        this.configs_field = ['site', 'picture']
     }
     /**
      * try-catch

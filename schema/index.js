@@ -44,3 +44,10 @@ exports.Config = mongolass.model('Configs', {
     name: { type: 'string', required: true },
     content: { type: 'string', required: true },
 })
+/**
+ * 商品
+ */
+exports.Products = mongolass.model('Products', {
+    name: { type: 'string', required: true },
+    
+})

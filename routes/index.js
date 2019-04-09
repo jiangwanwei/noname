@@ -2,7 +2,7 @@
 // import home  from '../controllers/home'
 // import common from '../controllers/common'
 // import order from '../controllers/order'
-const admin = require('../controllers/admin')
+const admin = require('../controllers/Admin')
 
 const expressJWT = require('express-jwt')
 const jwtauth = require('../middlewares/jwtauth')

@@ -1,8 +1,8 @@
-class Tools{
-	constructor(req, res) {
+class Tools {
+	constructor (req, res) {
 		Object.assign(this, {
-			req, 
-			res, 
+			req,
+			res,
 		})
 	}
 
@@ -13,11 +13,11 @@ class Tools{
 	 * @param {Objext} data    
 	 */
 	setJson(code, msg, data) {
-        let _data = {
-            code: code || 0,
-        }
-        if (msg) _data.msg = msg
-        if (data) _data.data = data
+		let _data = {
+			code: code || 0,
+		}
+		if (msg) _data.msg = msg
+		if (data) _data.data = data
 		return this.res.json(_data)
 	}
 
@@ -27,8 +27,8 @@ class Tools{
 	 * @return {String}      
 	 */
 	getFilenameExt(file) {
-	    const types = file.name.split('.')
-	    return types[types.length - 1]
+		const types = file.name.split('.')
+		return types[types.length - 1]
 	}
 
 	/**
@@ -38,7 +38,7 @@ class Tools{
 	 * @return {String}      
 	 */
 	rand(min, max) {
-	    return Math.floor(Math.random() * (max - min + 1) + min)
+		return Math.floor(Math.random() * (max - min + 1) + min)
 	}
 
 	/**
@@ -47,16 +47,16 @@ class Tools{
 	 * @return {String}      
 	 */
 	randString(size) {
-	    let result  = ''
-	    let allChar = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-	    
-	    size = size || 1
+		let result = ''
+		let allChar = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
-	    while (size--) {
-	        result += allChar.charAt(this.rand(0, allChar.length - 1))
-	    }
-	    
-	    return result
+		size = size || 1
+
+		while (size--) {
+			result += allChar.charAt(this.rand(0, allChar.length - 1))
+		}
+
+		return result
 	}
 
 	/**
@@ -220,7 +220,7 @@ class Tools{
 	 */
 	isNull(value) {
 		return value === null
-    }
+	}
 
 	/**
 	 * 判断某个元素是否为有限数
@@ -228,21 +228,21 @@ class Tools{
 	 * @return {Boolean}       
 	 */
 	isFinite(value) {
-      return typeof value == 'number' && isFinite(value)
-    }
+		return typeof value == 'number' && isFinite(value)
+	}
 
-    /**
-     * 判断某个元素是否为自然数
-     * @param  {Number}  value 
-     * @return {Boolean}       
-     */
-    isNaN(value) {
-      return this.isNumber(value) && value != +value
-    }
+	/**
+	 * 判断某个元素是否为自然数
+	 * @param  {Number}  value 
+	 * @return {Boolean}       
+	 */
+	isNaN(value) {
+		return this.isNumber(value) && value != +value
+	}
 
-    isError(value) {
-    	return this.type(value) === '[object Error]'
-    }
+	isError(value) {
+		return this.type(value) === '[object Error]'
+	}
 
 	/**
 	 * 删除字符串左右两端的空格
@@ -347,7 +347,7 @@ class Tools{
 
 		if (typeof target === 'boolean') {
 			deep = target
-			target = arguments[ i ] || {}
+			target = arguments[i] || {}
 			i++
 		}
 
@@ -361,7 +361,7 @@ class Tools{
 		}
 
 		for (; i < length; i++) {
-			if ( (options = arguments[ i ]) != null ) {
+			if ((options = arguments[i]) != null) {
 				for (name in options) {
 					src = target[name]
 					copy = options[name]
@@ -403,8 +403,8 @@ class Tools{
 		if (!obj || this.type(obj) !== '[object Object]') {
 			return !1
 		}
-		proto = getProto( obj )
-		if ( !proto ) {
+		proto = getProto(obj)
+		if (!proto) {
 			return !0
 		}
 		Ctor = hasOwn.call(proto, 'constructor') && proto.constructor
@@ -418,8 +418,8 @@ class Tools{
 	 */
 	isEmptyObject(obj) {
 		for (let i in obj)
-            return !1
-        return !0
+			return !1
+		return !0
 	}
 
 	/**
@@ -430,7 +430,7 @@ class Tools{
 	type(obj) {
 		const toString = Object.prototype.toString
 
-		if ( obj == null ) {
+		if (obj == null) {
 			return obj + ''
 		}
 
@@ -452,16 +452,16 @@ class Tools{
 	 * @return {Object}     
 	 */
 	clone(obj) {
-	    if (typeof obj !== 'object' || !obj) {
-	        return obj
-	    }
-	    let copy = {}
-	    for (let attr in obj) {
-	        if (obj.hasOwnProperty(attr)) {
-	            copy[attr] = obj[attr]
-	        }
-	    }
-	    return copy
+		if (typeof obj !== 'object' || !obj) {
+			return obj
+		}
+		let copy = {}
+		for (let attr in obj) {
+			if (obj.hasOwnProperty(attr)) {
+				copy[attr] = obj[attr]
+			}
+		}
+		return copy
 	}
 
 	/**
@@ -471,11 +471,11 @@ class Tools{
 	 * @return {[type]}      
 	 */
 	omit(obj, keys) {
-	    let o = this.clone(obj)
-	    keys.forEach(key => {
-	        delete o[key]
-	    })
-	    return o
+		let o = this.clone(obj)
+		keys.forEach(key => {
+			delete o[key]
+		})
+		return o
 	}
 
 	/**
@@ -485,13 +485,13 @@ class Tools{
 	 * @return {Array}     
 	 */
 	pluck(arr, key) {
-	    if (typeof arr !== 'object' || arr.length === 0) {
-	        return []
-	    }
-	    if (!key) {
-	        return arr
-	    }
-	    return arr.map(a => a[key])
+		if (typeof arr !== 'object' || arr.length === 0) {
+			return []
+		}
+		if (!key) {
+			return arr
+		}
+		return arr.map(a => a[key])
 	}
 
 	/**
@@ -512,12 +512,12 @@ class Tools{
 	 */
 	encodeUriQuery(value, pctEncodeSpaces) {
 		return encodeURIComponent(value)
-		.replace(/%40/gi, '@')
-		.replace(/%3A/gi, ':')
-		.replace(/%24/g, '$')
-		.replace(/%2C/gi, ',')
-		.replace(/%3B/gi, ';')
-		.replace(/%20/g, (pctEncodeSpaces ? '%20' : '+'))
+			.replace(/%40/gi, '@')
+			.replace(/%3A/gi, ':')
+			.replace(/%24/g, '$')
+			.replace(/%2C/gi, ',')
+			.replace(/%3B/gi, ';')
+			.replace(/%20/g, (pctEncodeSpaces ? '%20' : '+'))
 	}
 
 	/**
@@ -529,33 +529,33 @@ class Tools{
 		if (!obj) return ''
 		let that = this
 		let parts = []
-		for(let key in obj) {
+		for (let key in obj) {
 			const value = obj[key]
 			if (value === null || that.isUndefined(value)) return
 			if (that.isArray(value)) {
-				value.forEach(function(v) {
-					parts.push(that.encodeUriQuery(key)  + '=' + that.encodeUriQuery(that.serializeValue(v)))
+				value.forEach(function (v) {
+					parts.push(that.encodeUriQuery(key) + '=' + that.encodeUriQuery(that.serializeValue(v)))
 				})
 			} else {
 				parts.push(that.encodeUriQuery(key) + '=' + that.encodeUriQuery(that.serializeValue(value)))
 			}
 		}
 		return parts.join('&')
-    }
+	}
 
-    /**
-	 * 拼接URL
-	 * @param  {String} obj 
-	 * @param  {Object} obj 
-	 * @return {String} 
-	 */
-    buildUrl(url, obj) {
-    	const serializedParams = this.paramSerializer(obj)
+	/**
+ * 拼接URL
+ * @param  {String} obj 
+ * @param  {Object} obj 
+ * @return {String} 
+ */
+	buildUrl(url, obj) {
+		const serializedParams = this.paramSerializer(obj)
 		if (serializedParams.length > 0) {
 			url += ((url.indexOf('?') == -1) ? '?' : '&') + serializedParams
 		}
 		return url
-    }
+	}
 }
 
 module.exports = Tools
